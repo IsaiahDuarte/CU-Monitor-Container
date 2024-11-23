@@ -93,8 +93,9 @@ CMD ["pwsh.exe"]
 RUN  pwsh `
         -NoLogo `
         -NoProfile `
-        -Command "Write-host "Downloading setup script...";`
+        -Command "Write-host 'Downloading setup script...'';`
         $Body = New-Item -ItemType Directory -Path 'C:\setup_files';`
-        Write-host "Downloading setup script...";`
         Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/IsaiahDuarte/CU-Monitor-Container/refs/heads/main/setup_script.ps1' -outfile 'C:\setup_files\setup_script.ps1'; `
-        & 'C:\setup_files\setup_script.ps1'"
+        Write-host 'Running setup script...';`
+        & 'C:\setup_files\setup_script.ps1'`
+        Write-host 'Setup script complete.'"
