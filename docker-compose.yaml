@@ -1,0 +1,23 @@
+﻿name: cumonitor-in-docker
+services:
+  cumonitor:
+    image: cumonitor:latest
+    env_file: .env
+    environment:
+      - Token=${Token}
+      - PublicDNSName=${PublicDNSName}
+      - InternalDNSName=${InternalDNSName}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        Token: ${Token}
+        InternalDNSName: ${InternalDNSName}
+        PublicDNSName: ${PublicDNSName}
+    networks:
+      - docker_default
+    restart: unless-stopped
+
+networks:
+  docker_default:
+    external: true
