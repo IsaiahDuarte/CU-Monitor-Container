@@ -1,23 +1,39 @@
-﻿name: cumonitor-in-docker
-services:
-  cumonitor:
-    image: cumonitor:latest
+﻿services:
+  cu-monitor:
     env_file: .env
     environment:
       - Token=${Token}
-      - PublicDNSName=${PublicDNSName}
-      - InternalDNSName=${InternalDNSName}
-    build:
-      context: .
+      - DomainName=${DomainName}
+      - SiteName=${SiteName}
+    build: 
+      context: ./monitor
       dockerfile: Dockerfile
       args:
         Token: ${Token}
-        InternalDNSName: ${InternalDNSName}
-        PublicDNSName: ${PublicDNSName}
+        DomainName: ${DomainName}
+        SiteName: ${SiteName}
     networks:
-      - docker_default
+      - cu_network
     restart: unless-stopped
+  
+  cuagent-windows:
+    env_file: .env
+    environment:
+      - Token=${Token}
+      - DomainName=${DomainName}
+      - SiteName=${SiteName}
+      - AgentAuthKey=${AgentAuthKey}
+      - AgentRegKey=${AgentRegKey}
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+      args:
+        Token: ${Token}
+        DomainName: ${DomainName}
+        SiteName: ${SiteName}
+    networks:
+      - cu_network
 
 networks:
-  docker_default:
+  cu_network:
     external: true

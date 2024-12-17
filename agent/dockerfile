@@ -1,0 +1,37 @@
+﻿# escape=`
+
+# Args used by from statements must be defined here:
+ARG NanoServerRepo=windows/servercore
+ARG tag=ltsc2022
+
+FROM mcr.microsoft.com/${NanoServerRepo}:${tag}
+
+# Switch to Administrator
+USER ContainerAdministrator
+
+# Changing to pwsh shell
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# ARGs for the entrypoint script
+ARG Token
+ARG DomainName
+ARG SiteName
+ARG AgentAuthKey
+ARG AgentAuthKey
+
+ENV Token=$Token
+ENV DomainName=$DomainName
+ENV SiteName=$SiteName
+ENV AgentAuthKey=$AgentAuthKey
+ENV AgentRegKey=$AgentRegKey
+
+# Copy the install folder to the container
+COPY install install
+WORKDIR c:/install
+
+EXPOSE 50051
+EXPOSE 443
+EXPOSE 40705
+
+ENTRYPOINT powershell -File c:/install/entrypoint.ps1
+
