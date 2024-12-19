@@ -19,6 +19,7 @@
         Token = $env:Token
         InternalDNSName = $ENV:COMPUTERNAME + '.' + $ENV:DomainName
         SiteName = $ENV:SiteName
+        Debug = $true
     }
 
     Write-Host "Installing ControlUp monitor service"

@@ -29,7 +29,6 @@ ENV AgentRegKey=$AgentRegKey
 COPY install install
 WORKDIR c:/install
 
-EXPOSE 50051
 EXPOSE 443
 EXPOSE 40705
 

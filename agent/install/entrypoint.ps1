@@ -20,6 +20,7 @@
         AgentAuthenticationKey = $env:AgentAuthKey
         AgentRegistrationKey = $env:AgentRegKey
         Site = $ENV:SiteName
+        Debug = $true
     }
     Install-CUAgent @splat
 }
