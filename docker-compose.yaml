@@ -1,5 +1,7 @@
-﻿services:
+﻿name: "ControlUp-Deployment"
+services:
   cu-monitor:
+    container_name: "${MonitorHostName}.${DomainName}"
     env_file: .env
     environment:
       - Token=${Token}
@@ -18,11 +20,12 @@
       - ":443"
       - ":40705"
       - ":40706"
-      
     hostname: ${MonitorHostName}
+    domainname: ${DomainName}
     restart: unless-stopped
 
   cuagent-windows:
+    container_name: "${AgentHostName}.${DomainName}"
     env_file: .env
     environment:
       - Token=${Token}
@@ -42,8 +45,13 @@
     ports: 
       - ":443"
       - ":40705"
-    hostname: ${AgentHostName}`
+    depends_on:
+      - cu-monitor
+    hostname: ${AgentHostName}
+    domainname: ${DomainName}
+    restart: unless-stopped
 
 networks:
   rt-network:
     driver: nat
+    enable_ipv6: false

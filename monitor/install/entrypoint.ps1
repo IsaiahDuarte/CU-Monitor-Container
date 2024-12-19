@@ -17,9 +17,8 @@
 
     $splat = @{ 
         Token = $env:Token
-        InternalDNSName = $ENV:COMPUTERNAME + '.' + $ENV:DomainName
+        InternalDNSName = [System.Net.Dns]::GetHostByName($ENV:COMPUTERNAME).HostName
         SiteName = $ENV:SiteName
-        Debug = $true
     }
 
     Write-Host "Installing ControlUp monitor service"
