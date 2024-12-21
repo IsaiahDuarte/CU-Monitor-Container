@@ -1,8 +1,12 @@
 ﻿name: "ControlUp-Deployment"
 services:
   cu-monitor:
-    container_name: "${MonitorHostName}.${DomainName}"
+    container_name: ${MonitorHostName}
     env_file: .env
+    volumes:
+      - C:\ControlUp\MonitorProfile:C:\Windows\ServiceProfiles\NetworkService\AppData\Roaming\ControlUp
+      - C:\ControlUp\Config:C:\Config
+      - C:\ControlUp\MonitorEventLogs:C:\Windows\System32\winevt\Logs
     environment:
       - Token=${Token}
       - DomainName=${DomainName}
@@ -20,13 +24,17 @@ services:
       - ":443"
       - ":40705"
       - ":40706"
+
     hostname: ${MonitorHostName}
     domainname: ${DomainName}
     restart: unless-stopped
 
   cuagent-windows:
-    container_name: "${AgentHostName}.${DomainName}"
+    container_name: ${AgentHostName}
     env_file: .env
+    volumes:
+      - C:\ControlUp\AgentEventLogs:C:\Windows\System32\winevt\Logs
+
     environment:
       - Token=${Token}
       - DomainName=${DomainName}
