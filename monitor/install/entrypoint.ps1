@@ -5,8 +5,8 @@
     Write-Host "ControlUp monitor service started. Waiting for service to stop"
     While((Get-Service "*Monitor*").Status -eq 'Running') { Start-Sleep -Seconds 3600 }
 } else {
-    Write-Host "Lodctr /R"
-    Lodctr /R
+    Write-Host "Updating Host File"
+    Add-Content -Path $ENV:WINDIR\System32\drivers\etc\hosts -Value "`n127.0.0.1`t$ENV:MonitorHostName"
     
     Write-Host 'Installing ControlUp Automation Module'
     Install-PackageProvider -Name NuGet -Force -Confirm:$false | Out-Null
@@ -17,7 +17,7 @@
 
     $splat = @{ 
         Token = $env:Token
-        InternalDNSName = [System.Net.Dns]::GetHostByName($ENV:COMPUTERNAME).HostName
+        InternalDNSName = $ENV:COMPUTERNAME
         SiteName = $ENV:SiteName
     }
 
@@ -25,5 +25,6 @@
     
     Install-CUMonitor @splat
     Write-Host "ControlUp monitor service started. Waiting for service to stop"
+
     While((Get-Service "*Monitor*").Status -eq 'Running') { Start-Sleep -Seconds 3600 }
 }

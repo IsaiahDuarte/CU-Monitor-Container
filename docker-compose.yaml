@@ -11,6 +11,7 @@ services:
       - Token=${Token}
       - DomainName=${DomainName}
       - SiteName=${SiteName}
+      - MonitorHostName=${MonitorHostName}
     build:
       context: ./monitor
       dockerfile: Dockerfile
@@ -29,35 +30,35 @@ services:
     domainname: ${DomainName}
     restart: unless-stopped
 
-  cuagent-windows:
-    container_name: ${AgentHostName}
-    env_file: .env
-    volumes:
-      - C:\ControlUp\AgentEventLogs:C:\Windows\System32\winevt\Logs
+  # cuagent-windows:
+  #   container_name: ${AgentHostName}
+  #   env_file: .env
+  #   volumes:
+  #     - C:\ControlUp\AgentEventLogs:C:\Windows\System32\winevt\Logs
 
-    environment:
-      - Token=${Token}
-      - DomainName=${DomainName}
-      - SiteName=${SiteName}
-      - AgentAuthKey=${AgentAuthKey}
-      - AgentRegKey=${AgentRegKey}
-    build:
-      context: ./agent
-      dockerfile: Dockerfile
-      args:
-        Token: ${Token}
-        DomainName: ${DomainName}
-        SiteName: ${SiteName}
-    networks:
-      - rt-network
-    ports: 
-      - ":443"
-      - ":40705"
-    depends_on:
-      - cu-monitor
-    hostname: ${AgentHostName}
-    domainname: ${DomainName}
-    restart: unless-stopped
+  #   environment:
+  #     - Token=${Token}
+  #     - DomainName=${DomainName}
+  #     - SiteName=${SiteName}
+  #     - AgentAuthKey=${AgentAuthKey}
+  #     - AgentRegKey=${AgentRegKey}
+  #   build:
+  #     context: ./agent
+  #     dockerfile: Dockerfile
+  #     args:
+  #       Token: ${Token}
+  #       DomainName: ${DomainName}
+  #       SiteName: ${SiteName}
+  #   networks:
+  #     - rt-network
+  #   ports: 
+  #     - ":443"
+  #     - ":40705"
+  #   depends_on:
+  #     - cu-monitor
+  #   hostname: ${AgentHostName}
+  #   domainname: ${DomainName}
+  #   restart: unless-stopped
 
 networks:
   rt-network:

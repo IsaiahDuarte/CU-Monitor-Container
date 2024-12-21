@@ -12,14 +12,19 @@ USER ContainerAdministrator
 # Changing to pwsh shell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
+# Disable IPv6 on all network adapters
+RUN reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d 255 /f
+
 # ARGs for the entrypoint script
 ARG Token
 ARG DomainName
 ARG SiteName
+ARG MonitorHostName
 
 ENV Token=$Token
 ENV DomainName=$DomainName
 ENV SiteName=$SiteName
+ENV MonitorHostName=$MonitorHostName
 
 # Copy the install folder to the container
 COPY install install

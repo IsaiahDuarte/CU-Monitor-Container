@@ -9,6 +9,9 @@ FROM mcr.microsoft.com/${NanoServerRepo}:${tag}
 # Switch to Administrator
 USER ContainerAdministrator
 
+# Disable IPv6
+RUN reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d 0xFF /f
+
 # Changing to pwsh shell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
